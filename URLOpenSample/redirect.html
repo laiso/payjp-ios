@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>カスタムURLスキームサンプル - Safari View</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; margin: 20px; text-align: center; }
+        button { background-color: #007AFF; color: white; border: none; padding: 10px 20px; 
+                 border-radius: 8px; font-size: 16px; margin-top: 20px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .container { display: flex; flex-direction: column; align-items: center; 
+                      justify-content: center; height: 80vh; }
+        #result { margin-top: 20px; padding: 10px; color: #333; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SafariViewController カスタムURLスキームサンプル</h1>
+        <p>このページは開いてから3秒後に自動的にカスタムURLスキームにリダイレクトします</p>
+        <p>また、以下のボタンを押すと、JavaScriptからカスタムURLスキームが呼び出されます</p>
+        <button onclick="openCustomURLWithTimeout()">setTimeout版</button>
+        <button onclick="openCustomURLWithoutTimeout()" style="margin-left: 10px; background-color: #34C759;">setTimeoutなし版</button>
+        <div id="result"></div>
+    </div>
+    
+    <script>
+        // ページ読み込み時に実行される自動リダイレクト関数
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('result').innerText = '3秒後に自動的にリダイレクトします...';
+            
+            // 3秒後にカウントダウン表示用
+            var countdown = 3;
+            var countdownTimer = setInterval(function() {
+                countdown--;
+                if (countdown > 0) {
+                    document.getElementById('result').innerText = countdown + '秒後にリダイレクトします...';
+                } else {
+                    clearInterval(countdownTimer);
+                    document.getElementById('result').innerText = 'カスタムURLスキームを開いています...';
+                }
+            }, 1000);
+            
+            // 3秒後にカスタムURLスキームへリダイレクト
+            setTimeout(function() {
+                try {
+                    window.location.href = 'urlsample://action?param1=value1&param2=value2&source=safariview&method=auto';
+                } catch (e) {
+                    document.getElementById('result').innerText = '自動リダイレクト エラー: ' + e.message;
+                }
+            }, 3000);
+        });
+        
+        function openCustomURLWithTimeout() {
+            document.getElementById('result').innerText = 'setTimeout版: カスタムURLスキームを開こうとしています...';
+            
+            // カスタムURLスキームを呼び出す（setTimeout使用）
+            setTimeout(function() {
+                try {
+                    // カスタムURLスキームとパラメーターを指定
+                    window.location.href = 'urlsample://action?param1=value1&param2=value2&source=safariview&method=timeout';
+                    
+                    // iOSではアプリが開くとこのページから離れるため、このメッセージは表示されないかもしれません
+                    setTimeout(function() {
+                        document.getElementById('result').innerText = 'setTimeout版: アプリが開かれなかったか、またはページに戻ってきました';
+                    }, 2000);
+                } catch (e) {
+                    document.getElementById('result').innerText = 'setTimeout版 エラー: ' + e.message;
+                }
+            }, 500);
+        }
+        
+        function openCustomURLWithoutTimeout() {
+            document.getElementById('result').innerText = 'setTimeoutなし版: カスタムURLスキームを開こうとしています...';
+            
+            try {
+                // カスタムURLスキームとパラメーターを指定（setTimeout不使用）
+                window.location.href = 'urlsample://action?param1=value1&param2=value2&source=safariview&method=direct';
+                
+                // iOSではアプリが開くとこのページから離れるため、このメッセージは表示されないかもしれません
+                setTimeout(function() {
+                    document.getElementById('result').innerText = 'setTimeoutなし版: アプリが開かれなかったか、またはページに戻ってきました';
+                }, 2000);
+            } catch (e) {
+                document.getElementById('result').innerText = 'setTimeoutなし版 エラー: ' + e.message;
+            }
+        }
+    </script>
+</body>
+</html>
