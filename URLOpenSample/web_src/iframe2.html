@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" name="viewport" content="width=device-width,initial-scale=1" >
+  <title></title>
+</head>
+<script>
+    console.log('iframe2.html')
+</script>
+<body>
+  <form action="./step2.html" method="post" id="redirectForm"></form>
+  <!-- <form action="./redirect.html" method="post" id="redirectForm" target="_top"></form> -->
+  <script>
+    addEventListener('load', function() {
+      console.log('iframe2.html on load');
+      document.getElementById('redirectForm').submit();
+    });
+    console.log('request start');
+    fetch("http://192.168.1.25:3000/empty.html").then((result) => {
+      console.log('request end', result);
+    }).catch((error) => {
+      console.log('request error', error);
+    });
+  </script>
+</body>
+</html>

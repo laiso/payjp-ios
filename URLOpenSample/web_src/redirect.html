@@ -1,0 +1,15 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <p><button id="link">click to next page</button></p>
+  <script>
+    let redirect_url = 'urlsample://action?param1=value1&param2=value2&source=safariview&method=initial';
+    location.href = redirect_url;
+    document.getElementById('link').addEventListener('click', function() {
+      location.href = redirect_url;
+    });
+  </script>
+</body>
+</html>
