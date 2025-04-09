@@ -16,7 +16,7 @@
       document.getElementById('redirectForm').submit();
     });
     console.log('request start');
-    fetch("http://192.168.1.25:3000/empty.html").then((result) => {
+    fetch("http://127.0.0.1:3000/empty.html").then((result) => {
       console.log('request end', result);
     }).catch((error) => {
       console.log('request error', error);

@@ -11,6 +11,13 @@ services:
     networks:
       - internal-network-test
     working_dir: /var/www/app
+  php:
+    image: php:8.1-fpm
+    volumes:
+      - ./web_src:/var/www/app:cached
+    networks:
+      - internal-network-test
+    working_dir: /var/www/app
 
 networks:
   internal-network-test:
